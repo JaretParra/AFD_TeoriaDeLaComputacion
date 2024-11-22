@@ -5,21 +5,6 @@
 
 using namespace std;
 
-bool ValidacionCadena(string cadena){
-    for(int i=0; i<cadena.size(); i++){
-        switch (cadena.at(i)){
-        case 'a':
-            break;
-        case 'b':
-            break;
-        default:
-            i = cadena.size();
-            return false;
-            break;
-        }
-    }
-}
-
 struct AFD {        //Definicion del AFD
     unordered_set<string> Estados;
     unordered_set<char> Alfabeto;
@@ -46,7 +31,26 @@ AFD DefAutomata(){
     return Automata;
 }
 
+bool ValidarCadena(const AFD& Automata, const string& Cadena){
+    for(char valor : Cadena){
+        if (Automata.Alfabeto.find(valor) == Automata.Alfabeto.end()) {
+            cout<<"Símbolo no valido: "<<valor<<endl;
+            return false;
+        }
+    }
+}
 
+bool Proceso(const AFD& Automata, const string& Cadena){
+    string EstadoActual = Automata.EstadoInicial;
+    
+    for(char Valor : Cadena){
+        auto Estado = Automata.Transiciones.find(EstadoActual);
+        if(Estado == Automata.Transiciones.end() || Estado->second.find(Valor) == Estado->second.end()) {
+            cout<<"NO existe la Transicion "<<EstadoActual<<" con "<<Valor<<endl;
+            return false;
+        }
+    }
+}
 
 int main(){
     string cadena="";
